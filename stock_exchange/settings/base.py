@@ -19,6 +19,17 @@ from django.urls import reverse_lazy
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = config('SECRET_KEY')
 
+# DATABASES = {
+#      'default': {
+#          'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#          'NAME': 'nse',
+#          'USER': '', 
+#          'PASSWORD': '',
+#          'HOST': 'localhost', # '127.0.0.1' probably works also
+#          'PORT': '5432',
+#      }
+#  }
+
 DATABASES = {'default': dj_database_url.config()}
 
 DEBUG = True
@@ -65,7 +76,6 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
-#    'EXCEPTION_HANDLER': 'api.exceptions.muba_exception_handler',
 
 }
 
