@@ -1,0 +1,23 @@
+version: '3'
+services:
+  db:
+    image: postgres:11.1
+
+  db-init:
+    build:
+      context: .
+      dockerfile: docker/dba/Dockerfile
+    depends_on:
+      - db
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/app/Dockerfile
+    env_file: &envfile
+      - ./stock_exchange/env/.env
+    volumes:
+      - .:/src
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db

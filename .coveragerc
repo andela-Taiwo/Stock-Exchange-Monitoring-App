@@ -1,0 +1,8 @@
+[run]
+omit=
+    */.virtualenvs/nse/*
+    */venv/*
+    */.tox/*
+    */migrations/*
+    */s3_services.py
+    */docker/*
