@@ -23,7 +23,7 @@ SECRET_KEY = config('SECRET_KEY')
 #      'default': {
 #          'ENGINE': 'django.db.backends.postgresql_psycopg2',
 #          'NAME': 'nse',
-#          'USER': '', 
+#          'USER': 'taiwo', 
 #          'PASSWORD': '',
 #          'HOST': 'localhost', # '127.0.0.1' probably works also
 #          'PORT': '5432',
@@ -34,7 +34,7 @@ DATABASES = {'default': dj_database_url.config()}
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', '172.29.0.4']
 
 # Application definition
 

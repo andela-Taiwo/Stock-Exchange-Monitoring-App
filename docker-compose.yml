@@ -1,7 +1,13 @@
 version: '3'
+
+volumes:
+  postgres_data: {}
+
 services:
   db:
     image: postgres:11.1
+    environment:
+      - POSTGRES_DB=nse
 
   db-init:
     build:
@@ -9,12 +15,15 @@ services:
       dockerfile: docker/dba/Dockerfile
     depends_on:
       - db
+    env_file:
+      - .env
+
   app:
     build:
       context: .
       dockerfile: ./docker/app/Dockerfile
-    env_file: &envfile
-      - ./stock_exchange/env/.env
+    env_file:
+      - .env
     volumes:
       - .:/src
     ports:
