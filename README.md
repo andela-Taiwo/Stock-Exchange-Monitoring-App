@@ -3,7 +3,11 @@ An app that monitors the Nigeria Stock Exchange(NSE)
 
 Badges
 
+<<<<<<< HEAD
 [![Coverage Status](https://coveralls.io/repos/github/andela-Taiwo/Stock-Exchange-Monitoring-App/badge.svg?branch=master)](https://coveralls.io/github/andela-Taiwo/Stock-Exchange-Monitoring-App?branch=master) [![CircleCI](https://circleci.com/gh/andela-Taiwo/Stock-Exchange-Monitoring-App.svg?style=svg&circle-token=228eef13aadc17b77563161162299829c1e24618)](https://circleci.com/gh/andela-Taiwo/Stock-Exchange-Monitoring-App)
+=======
+[![Coverage Status](https://coveralls.io/repos/github/andela-Taiwo/Stock-Exchange-Monitoring-App/badge.svg?branch=master)](https://coveralls.io/github/andela-Taiwo/Stock-Exchange-Monitoring-App?branch=master) [![CircleCI](https://circleci.com/gh/andela-Taiwo/Stock-Exchange-Monitoring-App.svg?style=svg)](https://circleci.com/gh/andela-Taiwo/Stock-Exchange-Monitoring-App)
+>>>>>>> Add hosting config (#4)
 
 ## Technology 
 * **Python 3** : “Python is a widely used high-level programming language for general-purpose programming, created by Guido van Rossum and first released in 1991[source](https://www.python.org/downloads/release/python-360/). An interpreted language, Python has a design philosophy which emphasizes code readability (notably using whitespace indentation to delimit code blocks rather than curly braces or keywords), and a syntax which allows programmers to express concepts in fewer lines of code than possible in languages such as C++ or Java. The language provides constructs intended to enable writing clear programs on both a small and large scale” 
@@ -21,6 +25,7 @@ Badges
 * - Upload a profile picture `POST api/v1/profile/upload/`
 * - Change profile picture `PUT api/v1/profile/upload/{id}/`
 * - Delete profile picture `DELETE api/v1/profile/upload/{id}/`
+<<<<<<< HEAD
 * - Create roles  `POST api/v1/roles/`
 * - Retrieve roles `GET api/v1/roles/`
 * - Update roles `PUT api/v1/roles/{user_id}/`
@@ -28,6 +33,8 @@ Badges
 * - List user roles `GET api/v1/user-roles/{user_id}/list/`
 
 #### Yet to be implemented
+=======
+>>>>>>> Add hosting config (#4)
 * - Create personal stocks porfolio  `POST api/v1/stock/portfolio/`
 * - Retrieve personal `GET api/v1/stock/portfolio/`
 
