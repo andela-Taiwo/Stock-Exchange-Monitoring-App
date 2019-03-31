@@ -7,5 +7,4 @@ from .views import (
 router = DefaultRouter()
 router.register(r'stock', StockViewSet, base_name='apiv1_stock')
 urlpatterns = []
-# print(router.urls, '$$'*50)
 urlpatterns += router.urls

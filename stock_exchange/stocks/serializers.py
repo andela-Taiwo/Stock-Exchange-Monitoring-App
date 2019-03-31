@@ -13,13 +13,7 @@ class CreateStocksSerializer(serializers.ModelSerializer):
     ''' Serializer for loading the stocks data'''
     class Meta:
         model = Stock
-        fields = [
-            "id",
-            "opening_price",
-            "closing_price",
-            "lowest_price"
-        ]
-
+        fields = ('__all__')
 
 class StockSerializer(serializers.ModelSerializer):
     ''' Serializer for retrieving the stocks data'''
@@ -34,7 +28,8 @@ class StockSerializer(serializers.ModelSerializer):
             "pub_date",
             "gains",
             "loses",
-            "percentage"
+            "percentage",
+            "stock_name"
         ]
 
 
