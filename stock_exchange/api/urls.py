@@ -7,6 +7,6 @@ router = DefaultRouter()
 
 urlpatterns = [
     path('', include('users.urls')),
-    # path('', include('flight.urls'))
+    path('', include('stocks.urls'))
 ]
 urlpatterns += router.urls

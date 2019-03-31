@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
-
+import sys
 from datetime import datetime, timedelta
 from decouple import config, Csv
 import dj_database_url
@@ -19,22 +19,18 @@ from django.urls import reverse_lazy
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = config('SECRET_KEY')
 
-# DATABASES = {
-#      'default': {
-#          'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#          'NAME': 'nse',
-#          'USER': '', 
-#          'PASSWORD': '',
-#          'HOST': 'localhost', # '127.0.0.1' probably works also
-#          'PORT': '5432',
-#      }
-#  }
 
 DATABASES = {'default': dj_database_url.config()}
 
+if 'test' in sys.argv:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'mydatabase'
+    }
+
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', '172.29.0.4']
 
 # Application definition
 
