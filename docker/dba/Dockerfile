@@ -6,7 +6,7 @@ RUN apk update \
     postgresql \
     postgresql-dev \
     libpq
-COPY requirements.txt /src/
+COPY stock_exchange/requirements.txt /src/
 WORKDIR /src/
 RUN pip install -r requirements.txt
 COPY . /src/
