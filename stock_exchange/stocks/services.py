@@ -29,11 +29,14 @@ def load_stock(requestor, stock_csv):
     reader = csv.DictReader(decode_utf8(stock_csv))
     result = []
     for row in reader:
-        opening_price = float(row.get('openingPrice', 0.00))
-        closing_price = float(row.get('closingPrice', '0.00'))
-        lowest_price = float(row.get('lowestPrice', 0.00))
-        highest_price = float(row.get('highestPrice', 0.00))
-        stock_name = row.get('stockName')
+        try:
+            opening_price = float(row.get('openingPrice', 0.00))
+            closing_price = float(row.get('closingPrice', 0.00))
+            lowest_price = float(row.get('lowestPrice', 0.00))
+            highest_price = float(row.get('highestPrice', 0.00))
+            stock_name = row.get('stockName')
+        except:
+            raise exceptions.NotAcceptable(detail='stock prices can only be numbers')
         data_info = {
             'opening_price': opening_price,
             'closing_price': closing_price,
@@ -55,11 +58,21 @@ def list_stocks(requestor, query_params):
     today = datetime.now(tz=pytz.UTC)
     today_begins = today.replace(hour=0, minute=0, second=0, microsecond=0)
     today_ends = today_begins + timedelta(days=1)
-    stocks = Stock.objects.filter(
-        pub_date__range=(today_begins, today_ends)
-    ).order_by('-gains', 'pub_date')
+    query_set = Stock.objects
+    gainers = query_set.filter(
+        pub_date__range=(today_begins, today_ends),
+        gains__gt=0).order_by('-gains', 'stock_name')
+    losers = query_set.filter(
+        pub_date__range=(today_begins, today_ends),
+        loses__lte=0, gains__lte=0).order_by('loses', 'pub_date')
 
-    return stocks
+    losers = losers[:3] if losers.count() > 3 else losers
+    gainers = losers[:3] if gainers.count() > 3 else gainers
+  
+    return {
+        'top_gainers': StockSerializer(gainers, many=True).data,
+        'top_losers': StockSerializer(losers, many=True).data
+    }
 
 def filter_stock_per_week(requestor, query_params, stock_name, week):
     ''' List the stock for a company in a given week '''
@@ -68,5 +81,5 @@ def filter_stock_per_week(requestor, query_params, stock_name, week):
     week_end = week_begin + timedelta(days=7)
     stocks = Stock.objects.filter(
         pub_date__gte=week_begin, pub_date__lte=week_end, stock_name=stock_name
-        ).order_by('-gains', 'loses', 'pub_date')
+        ).order_by('-gains', '-loses', 'pub_date')
     return stocks

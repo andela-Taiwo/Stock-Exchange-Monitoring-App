@@ -16,23 +16,6 @@ import stocks.services as stock_services
 
 class StockViewSet(viewsets.ViewSet):
 
-    @decorators.action(
-        methods=['get'],
-        detail=False,
-        url_path='company/(?P<name>[A-Za-z0-9_.\s]+)/week/(?P<week>[0-9+\-]+)'
-        )
-    def filter_per_week(self, request, *args, **kwargs):
-        ''' View to list stock for a particular company in a given week'''
-        stocks = stock_services.filter_stock_per_week(
-            requestor=request.user,
-            query_params=request.query_params,
-            stock_name=kwargs.get('name'),
-            week=kwargs.get('week'),
-        ) 
-        return NSEMonitoringAPIResponse(
-            StockSerializer(stocks, many=True).data
-        )
-
     def create(self, request, *args, **kwargs):
         ''' Upload stock data'''
         try:
@@ -56,6 +39,23 @@ class StockViewSet(viewsets.ViewSet):
             requestor=request.user,
             query_params=request.query_params
         )
+        return NSEMonitoringAPIResponse(
+            stocks
+        )
+
+    @decorators.action(
+        methods=['get'],
+        detail=False,
+        url_path='company/(?P<name>[A-Za-z0-9_.\s]+)/week/(?P<week>[0-9+\-]+)'
+        )
+    def filter_per_week(self, request, *args, **kwargs):
+        ''' View to list stock for a particular company in a given week'''
+        stocks = stock_services.filter_stock_per_week(
+            requestor=request.user,
+            query_params=request.query_params,
+            stock_name=kwargs.get('name'),
+            week=kwargs.get('week'),
+        ) 
         return NSEMonitoringAPIResponse(
             StockSerializer(stocks, many=True).data
         )

@@ -5,30 +5,26 @@ from django.contrib.auth.models import User
 from rest_framework import exceptions as drf_exceptions
 from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase
-from user.models import Profile
-from user.tests import factory as user_factory
-from user import services as user_services
+from users.models import Profile
+from users.tests import factory as user_factory
+from users import services as user_services
 from allauth.account.models import (
     EmailAddress,
     EmailConfirmation,
     EmailConfirmationHMAC,
 )
-
 from allauth.tests import Mock, TestCase, patch
 from allauth.utils import get_user_model, get_username_max_length
-
-
 from django.core.files.uploadedfile import SimpleUploadedFile
 from api.s3_services import MockStore
-from allauth.utils import get_user_model
 from django.conf import settings
-from user.tests import factory as user_factory
+
 mockstore = MockStore()
 
 
-@patch('user.services.s3_presigned_url', new=mockstore.mock_presigned_url)
-@patch('user.services.s3_upload', new=mockstore.mock_upload)
-@patch('user.services.s3_delete', new=mockstore.mock_delete)
+@patch('users.services.s3_presigned_url', new=mockstore.mock_presigned_url)
+@patch('users.services.s3_upload', new=mockstore.mock_upload)
+@patch('users.services.s3_delete', new=mockstore.mock_delete)
 class TestUsersValid(APITestCase):
 
     def setUp(self):
@@ -190,9 +186,9 @@ class TestUsersValid(APITestCase):
         self.assertEqual(response.status_code, 200)
 
         
-@patch('user.services.s3_presigned_url', new=mockstore.mock_presigned_url)
-@patch('user.services.s3_upload', new=mockstore.mock_upload)
-@patch('user.services.s3_delete', new=mockstore.mock_delete)
+@patch('users.services.s3_presigned_url', new=mockstore.mock_presigned_url)
+@patch('users.services.s3_upload', new=mockstore.mock_upload)
+@patch('users.services.s3_delete', new=mockstore.mock_delete)
 class TestUserExceptions(TestUsersValid):
     def test_register_with_inadequate_password(self):
         data = {
