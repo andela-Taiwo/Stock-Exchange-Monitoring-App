@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from rest_framework import exceptions as drf_exceptions
 from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase
-from users.models import Profile
+from users.models import Profile, Role
 from users.tests import factory as user_factory
 from users import services as user_services
 from allauth.account.models import (
@@ -28,6 +28,10 @@ mockstore = MockStore()
 class TestUsersValid(APITestCase):
 
     def setUp(self):
+
+        Role.objects.create(label='Admin')
+        Role.objects.create(label='User')
+
         self.invalid_token = 'Bearer Eyhbfhebjwkfbhjbuw3hiuhufhnffjjfjk'
         self.uploader = user_factory._create_user(self,email='testadmin@gmail.com')
         

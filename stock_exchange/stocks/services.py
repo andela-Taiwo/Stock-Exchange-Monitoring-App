@@ -11,6 +11,8 @@ from stocks.serializers import (
     PortfolioSerializer
 )
 
+from users.roles import (UserPermissions, has_permission, check_permission)
+
 
 def decode_utf8(input_iterator):
     for l in input_iterator:
@@ -26,6 +28,8 @@ def get_percentage(opening_price, closing_price):
     return float(percentage)
 
 def load_stock(requestor, stock_csv):
+    permissions = UserPermissions(requestor, 'stocks')
+    permissions.check('upload')
     reader = csv.DictReader(decode_utf8(stock_csv))
     result = []
     for row in reader:
@@ -55,6 +59,8 @@ def load_stock(requestor, stock_csv):
     return result
 
 def list_stocks(requestor, query_params):
+    permissions = UserPermissions(requestor, 'stocks')
+    permissions.check('list')
     today = datetime.now(tz=pytz.UTC)
     today_begins = today.replace(hour=0, minute=0, second=0, microsecond=0)
     today_ends = today_begins + timedelta(days=1)
@@ -76,6 +82,8 @@ def list_stocks(requestor, query_params):
 
 def filter_stock_per_week(requestor, query_params, stock_name, week):
     ''' List the stock for a company in a given week '''
+    permissions = UserPermissions(requestor, 'stocks')
+    permissions.check('filter')
     week = get_week(week)
     week_begin = normalize_week_begin(week)
     week_end = week_begin + timedelta(days=7)

@@ -91,3 +91,39 @@ class CustomLoginView(LoginView):
         mydata = {"message": "You have successfully logged in", "status": "success"}
         orginal_response.data.update(mydata)
         return orginal_response
+
+class RolesViewSet(viewsets.ViewSet):
+    def list(self, request, **kwargs):
+        roles = user_service.list_roles(request.user)
+        return NSEMonitoringAPIResponse(user_service.serialize_roles(request.user, roles, many=True, compact=True))
+
+    def retrieve(self, request, **kwargs):
+        role = user_service.retrieve_role(request.user, role_pk=kwargs.get('pk'))
+        return NSEMonitoringAPIResponse(user_service.serialize_roles(request.user, role))
+
+    def update(self, request, **kwargs):
+        role = user_service.update_role(request.user, role_pk=kwargs.get('pk'), data=request.data)
+        return NSEMonitoringAPIResponse(user_service.serialize_roles(request.user, role))
+
+    @decorators.action(methods=['GET'], detail=False, url_path='init')
+    def init(self, request, **kwargs):
+        role = user_service.init_role(request.user)
+        return NSEMonitoringAPIResponse(user_service.serialize_roles(request.user, role))
+
+    def create(self, request, **kwargs):
+        role = user_service.create_role(request.user, data=request.data)
+        return NSEMonitoringAPIResponse(user_service.serialize_roles(request.user, role))
+
+
+class UserRolesViewSet(viewsets.ViewSet):
+    
+    @decorators.action(methods=['GET'], detail=True, url_path='list')
+    def list_user_roles(self, request, **kwargs):
+        roles = user_service.list_user_roles(request.user, profile_pk=kwargs.get('pk'))
+        return NSEMonitoringAPIResponse(user_service.serialize_user_roles(request.user, roles))
+
+    @decorators.action(methods=['PUT'], detail=True, url_path='update')
+    def update_user_roles(self, request, **kwargs):
+        roles = user_service.update_user_roles(request.user, profile_pk=kwargs.get('pk'), data=request.data)
+        return NSEMonitoringAPIResponse(user_service.serialize_user_roles(request.user, roles))
+
