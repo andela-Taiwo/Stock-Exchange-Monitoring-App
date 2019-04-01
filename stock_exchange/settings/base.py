@@ -197,7 +197,7 @@ USE_L10N = True
 USE_TZ = True
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "stock_exchange/static"),
+    os.path.join(BASE_DIR, "static"),
 ]
 print(os.path.join(BASE_DIR, 'static'))
 # Static files (CSS, JavaScript, Images)
