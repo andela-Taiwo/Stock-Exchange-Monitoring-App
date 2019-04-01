@@ -206,11 +206,15 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 # STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 =======
 # STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 >>>>>>> fixing csss
+=======
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+>>>>>>> fixing statics
 
 # S3 Credentials
 S3_REGION = 'us-east-2'  # Ohio
