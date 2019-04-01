@@ -26,6 +26,9 @@ Badges
 * - Change profile picture `PUT api/v1/profile/upload/{id}/`
 * - Delete profile picture `DELETE api/v1/profile/upload/{id}/`
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> update readme
 * - Create roles  `POST api/v1/roles/`
 * - Retrieve roles `GET api/v1/roles/`
 * - Update roles `PUT api/v1/roles/{user_id}/`
@@ -33,8 +36,11 @@ Badges
 * - List user roles `GET api/v1/user-roles/{user_id}/list/`
 
 #### Yet to be implemented
+<<<<<<< HEAD
 =======
 >>>>>>> Add hosting config (#4)
+=======
+>>>>>>> update readme
 * - Create personal stocks porfolio  `POST api/v1/stock/portfolio/`
 * - Retrieve personal `GET api/v1/stock/portfolio/`
 
