@@ -207,6 +207,7 @@ STATIC_URL = '/static/'
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 # STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 =======
@@ -215,6 +216,9 @@ STATIC_URL = '/static/'
 =======
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 >>>>>>> fixing statics
+=======
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+>>>>>>> fixing whitenoise issue
 
 # S3 Credentials
 S3_REGION = 'us-east-2'  # Ohio
