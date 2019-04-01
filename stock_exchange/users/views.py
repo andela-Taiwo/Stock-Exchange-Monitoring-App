@@ -127,6 +127,9 @@ class UserRolesViewSet(viewsets.ViewSet):
         roles = user_service.update_user_roles(request.user, profile_pk=kwargs.get('pk'), data=request.data)
         return NSEMonitoringAPIResponse(user_service.serialize_user_roles(request.user, roles))
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> add permissions
+=======
+>>>>>>> fixing css issues
