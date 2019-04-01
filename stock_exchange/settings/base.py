@@ -197,7 +197,7 @@ USE_L10N = True
 USE_TZ = True
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "stock_exchange/static"),
 ]
 print(os.path.join(BASE_DIR, 'static'))
 # Static files (CSS, JavaScript, Images)
@@ -205,7 +205,8 @@ print(os.path.join(BASE_DIR, 'static'))
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+
 
 # S3 Credentials
 S3_REGION = 'us-east-2'  # Ohio
