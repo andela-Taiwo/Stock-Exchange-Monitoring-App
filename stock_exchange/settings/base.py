@@ -87,7 +87,7 @@ EMAIL_USE_TLS = True
 # ACCOUNT_ADAPTER = 'api.adapter.DefaultAccountAdapterCustom'
 URL_FRONT = 'http://localhost:8000/'
 
-LOGIN_URL='http://fly-right.herokuapp.com/api/v1/login/'
+LOGIN_URL='https://stormy-lake-21329.herokuapp.com/api/v1/login/'
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
