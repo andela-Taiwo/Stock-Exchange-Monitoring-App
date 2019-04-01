@@ -126,4 +126,3 @@ class UserRolesViewSet(viewsets.ViewSet):
     def update_user_roles(self, request, **kwargs):
         roles = user_service.update_user_roles(request.user, profile_pk=kwargs.get('pk'), data=request.data)
         return NSEMonitoringAPIResponse(user_service.serialize_user_roles(request.user, roles))
-
