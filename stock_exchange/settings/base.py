@@ -28,9 +28,21 @@ if 'test' in sys.argv:
         'NAME': 'mydatabase'
     }
 
+elif 'RDS_DB_NAME' in os.environ:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': os.environ['RDS_DB_NAME'],
+            'USER': os.environ['RDS_USERNAME'],
+            'PASSWORD': os.environ['RDS_PASSWORD'],
+            'HOST': os.environ['RDS_HOSTNAME'],
+            'PORT': os.environ['RDS_PORT'],
+        }
+}
+
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '172.29.0.4']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 # Application definition
 
@@ -54,6 +66,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'rest_auth.registration',
 ]
+ADMIN_USER_EMAIL = config('ADMIN_USER_EMAIL')
 SITE_ID=1
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
@@ -87,7 +100,7 @@ EMAIL_USE_TLS = True
 # ACCOUNT_ADAPTER = 'api.adapter.DefaultAccountAdapterCustom'
 URL_FRONT = 'http://localhost:8000/'
 
-LOGIN_URL='https://stormy-lake-21329.herokuapp.com/api/v1/login/'
+LOGIN_URL='stock-exchange-env.qdtzm52k3p.us-east-1.elasticbeanstalk.com/api/v1/login/'
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
@@ -188,7 +201,7 @@ CELERY_ACCEPT_CONTENT = ['pickle', 'json', 'msgpack', 'yaml']
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Lagos'
 
 USE_I18N = True
 
@@ -196,20 +209,24 @@ USE_L10N = True
 
 USE_TZ = True
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, "static"),
+# ]
 print(os.path.join(BASE_DIR, 'static'))
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+STATIC_ROOT = 'static'
 
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 # STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+=======
+>>>>>>> Fix css issues
 
 =======
 # STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'

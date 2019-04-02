@@ -13,7 +13,6 @@ from stocks.serializers import (
 
 from users.roles import (UserPermissions, has_permission, check_permission)
 
-
 def decode_utf8(input_iterator):
     for l in input_iterator:
         yield l.decode('utf-8')
