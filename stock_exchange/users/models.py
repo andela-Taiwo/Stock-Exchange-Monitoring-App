@@ -17,6 +17,26 @@ from django.dispatch import receiver
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from api.soft_deletion_model import SoftDeletionModel
 
+
+class Permission(models.Model):
+    resource = models.CharField(max_length=255, verbose_name='Resource')
+    action = models.CharField(max_length=255, verbose_name='Action')
+
+    def label(self):
+        return '{}.{}'.format(self.resource, self.action)
+
+    def __str__(self):
+        return '{}.{}'.format(self.resource, self.action)
+
+
+class Role(models.Model):
+    label = models.CharField(max_length=255, verbose_name='Label')
+    permissions = models.ManyToManyField(Permission)
+
+    def __str__(self):
+        return self.label
+        
+
 class UserManager(BaseUserManager):
     use_in_migrations = True
 
@@ -127,6 +147,7 @@ class Profile(models.Model):
     type = models.IntegerField(choices=USER_TYPES, default=USER_CLIENT)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+    roles = models.ManyToManyField(Role)
     # profile_picture_name = models.TextField(null=True, blank=True)
     # profile_picture_url = models.TextField(null=True, blank=True)
     # profile_picture_key = models.TextField(null=True, blank=True)
@@ -169,4 +190,5 @@ class Upload(SoftDeletionModel):
     def save(self, *args, **kwargs):
         self.validate_unique()
         super(Upload, self).save(*args, **kwargs)
+
 

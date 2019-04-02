@@ -59,3 +59,4 @@ class StockViewSet(viewsets.ViewSet):
         return NSEMonitoringAPIResponse(
             StockSerializer(stocks, many=True).data
         )
+        

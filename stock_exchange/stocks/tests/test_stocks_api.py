@@ -2,11 +2,11 @@ import os
 import pytz
 from datetime import datetime
 from django.urls.exceptions import NoReverseMatch
-from django.contrib.auth.models import User
 from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase
 from django.core.files.uploadedfile import SimpleUploadedFile
 from stocks.models import Stock
+from users.models import (Role, Permission, User)
 from users.tests import factory as user_factory
 from allauth.account.models import (
     EmailAddress
@@ -18,8 +18,27 @@ from allauth.utils import get_user_model
 class TestStockAPI(APITestCase):
    
     def setUp(self):
+        permissions_setup = [
+            ('stocks', 'list'),
+            ('stocks', 'upload'),
+            ('stocks', 'filter'),
+        ]
+        permissions = []
+
+        for perm in permissions_setup:
+            resource, action = perm
+            permissions.append(
+                Permission.objects.create(resource=resource, action=action)
+            )
+
+        self.role = Role.objects.create(label='Admin')
+        Role.objects.create(label='User')
+        for permission in permissions:
+            self.role.permissions.add(permission)
+
         self.invalid_token = 'Eyhbfhebjwkfbhjbuw3hiuhufhnffjjfjkhjfghgbsvvsk74576b873875t378568'
         self.user = user_factory._create_user(self,email='testadmin@gmail.com')
+        self.user.profile.roles.add(self.role)
         self.date_ = datetime.now().strftime('%Y-%m-%d')
         self.stock = Stock.objects.create(
             opening_price=92.00,
@@ -72,6 +91,7 @@ class TestStockAPI(APITestCase):
 
     def test_upload_stock_data_csv(self):
         user = self._create_login_user_with_verified_email()
+        User.objects.get(id=(user.data['user']['pk'])).profile.roles.add(self.role)
         base_path = os.path.dirname(os.path.realpath(__file__))
         with open(base_path + '/stocks.csv', 'rb') as f:
             file_upload = SimpleUploadedFile(content = f.read(), name = f.name)
@@ -91,6 +111,7 @@ class TestStockAPI(APITestCase):
 
     def test_list_stocks(self):
         user = self._create_login_user_with_verified_email()
+        User.objects.get(id=(user.data['user']['pk'])).profile.roles.add(self.role)
         response = self.client.get(
             reverse(
                 'apiv1_stock-list'
@@ -106,7 +127,7 @@ class TestStockAPI(APITestCase):
 
     def test_list_company_stocks_for_a_week(self):
         user = self._create_login_user_with_verified_email()
-        
+        User.objects.get(id=(user.data['user']['pk'])).profile.roles.add(self.role)
         response = self.client.get(
             reverse(
                 'apiv1_stock-filter-per-week', args=['ABC', self.date_]
@@ -121,6 +142,23 @@ class TestStockAPI(APITestCase):
 
 
 class TestStockAPIExceptions(TestStockAPI):
+    def test_user_can_not_upload(self):
+        user = self._create_login_user_with_verified_email()
+        base_path = os.path.dirname(os.path.realpath(__file__))
+        with open(base_path + '/stocks.csv', 'rb') as f:
+            file_upload = SimpleUploadedFile(content = f.read(), name = f.name)
+            data = {
+                "stock_file": file_upload
+            }
+            response = self.client.post(
+                reverse(
+                    'apiv1_stock-list'
+                ),
+                data=data,
+                HTTP_AUTHORIZATION='Bearer {}'.format(user.data['token']),
+            )
+            self.assertEqual(response.status_code, 403)
+
     def test_can_not_list_stocks_without_valid_token(self):
         response = self.client.get(
             reverse(

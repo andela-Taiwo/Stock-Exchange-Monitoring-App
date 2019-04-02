@@ -2,6 +2,7 @@ import json
 from rest_framework.generics import get_object_or_404
 from django.contrib.auth.models import User
 from rest_framework import exceptions
+from rest_framework import serializers
 from rest_framework.exceptions import APIException
 from django.db import (
     transaction,
@@ -14,9 +15,13 @@ from api.s3_services import (
     s3_presigned_url
 )
 from users.models import (
-  Profile, Upload
+  Profile, Upload, Role, Permission
 )
 
+from users.roles import (UserPermissions, has_permission, check_permission)
+from users.permissions import (
+    PERMISSION_READ, PERMISSION_WRITE, PERMISSIONS, PERMISSION_LEVELS
+)
 from users.serializers import ProfileSerializer, FileUploadSerializer
 
 
@@ -149,3 +154,172 @@ def retrieve_profile(requestor, profile_id):
     if requestor.is_staff or requestor.id == profile.user_id:
         return profile
     raise exceptions.PermissionDenied()
+
+
+
+class PermissionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Permission
+        fields = '__all__'
+
+
+class RoleSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Role
+        fields = [
+            'id',
+            'label',
+
+        ]
+
+
+
+class CompactRoleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Role
+        fields = [
+            'id',
+            'label'
+        ]
+
+
+def serialize_roles(requestor, roles, *, many=False, compact=False):
+    serializer = RoleSerializer if compact is False else CompactRoleSerializer
+    return serializer(roles, many=many).data
+
+
+def list_roles(requestor):
+    permissions = UserPermissions(requestor, 'roles')
+    permissions.check('list')
+
+    roles = Role.objects.all()
+
+    return roles
+
+
+def retrieve_role(requestor, *, role_pk):
+    permissions = UserPermissions(requestor, 'roles')
+    permissions.check('retrieve')
+
+    role = get_object_or_404(Role, pk=role_pk)
+
+    return role
+
+
+def init_role(requestor):
+    permissions = UserPermissions(requestor, 'roles')
+    permissions.check('create')
+
+    role = Role()
+
+    return role
+
+
+def _save_role(requestor, role_pk, data):
+    role = None
+
+    with transaction.atomic():
+        if role_pk is not None:
+            role = retrieve_role(requestor, role_pk=role_pk)
+        serializer = RoleSerializer(instance=role, data=data)
+        serializer.is_valid(raise_exception=True)
+        role = serializer.save()
+
+    return role
+
+
+def create_role(requestor, *, data):
+    permissions = UserPermissions(requestor, 'roles')
+    permissions.check('create')
+
+    role = _save_role(requestor, None, data)
+
+    return role
+
+
+def update_role(requestor, *, role_pk, data):
+    permissions = UserPermissions(requestor, 'roles')
+    permissions.check('update')
+
+    role = _save_role(requestor, role_pk, data)
+
+    return role
+
+#
+# User roles
+#
+
+
+def serialize_user_roles(requestor, roles):
+    return {
+        'roles': [role.id for role in roles]
+    }
+
+
+def list_user_roles(requestor, *, profile_pk):
+    permissions = UserPermissions(requestor, 'user.role')
+    permissions.check('list')
+
+    profile = retrieve_user(requestor, pk=profile_pk)
+
+    roles = profile.roles.all()
+
+    return roles
+
+
+def update_user_roles(requestor, *, profile_pk, data):
+    permissions = UserPermissions(requestor, 'user.role')
+    permissions.check('update')
+
+    profile = retrieve_user(requestor, pk=profile_pk)
+
+    new_ids = set(data['roles'])
+
+    # get_potus = None
+    # try:
+    #     get_potus = Role.objects.get(label='POTUS')
+    # except:
+    #     raise AssertionError('Role POTUS is not found in DB')
+    # if get_potus.id in new_ids:
+    #     raise exceptions.PermissionDenied(detail="")
+
+    unchanged_ids = []
+    roles = list(profile.roles.all())
+    for role in roles:
+        if role.id not in new_ids:
+            profile.roles.remove(role)
+        else:
+            unchanged_ids.append(role.id)
+
+    for id in (new_ids - set(unchanged_ids)):
+        role = Role.objects.get(pk=id)
+        profile.roles.add(role)
+
+    return profile.roles.all()
+
+
+# def get_permissions(user):
+#     assert isinstance(user, User)
+#     permissions = UserPermissions(user)
+
+#     ui_permissions = {}
+#     for p in permissions.permissions:
+#         if p[0] == 'ui':
+#             ui_permissions['{}.{}'.format(p[0], p[1])] = True
+#     # print(ui_permissions)
+
+def retrieve_user(requestor, pk):
+    permissions = UserPermissions(requestor, 'user')
+    permissions.check('retrieve')
+
+    if permissions.has('retrieve-any'):
+        return Profile.objects.get(pk=pk)
+
+    elif permissions.has('retrieve-self'):
+        if requestor.profile.pk != int(pk):
+            raise exceptions.PermissionDenied(detail="")
+
+        return Profile.objects.get(pk=pk)
+
+    raise exceptions.PermissionDenied(detail="")

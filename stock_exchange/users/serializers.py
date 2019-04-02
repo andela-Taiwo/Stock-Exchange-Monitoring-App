@@ -1,6 +1,6 @@
 import re
 from rest_framework import serializers
-from users.models import User, Profile, Upload
+from users.models import User, Profile, Upload, Role
 from rest_auth.serializers import UserDetailsSerializer, PasswordResetSerializer
 from rest_auth.registration.serializers import RegisterSerializer
 from allauth.account.adapter import get_adapter
@@ -96,6 +96,7 @@ class UserSerializer(UserDetailsSerializer):
     city = serializers.CharField(source="profile.city")
     zipcode = serializers.CharField(source="profile.zipcode")
     country = serializers.CharField(source="profile.country")
+    role = serializers.SerializerMethodField()
 
     class Meta(UserDetailsSerializer.Meta):
         fields = UserDetailsSerializer.Meta.fields + (
@@ -107,7 +108,11 @@ class UserSerializer(UserDetailsSerializer):
             'city',
             'zipcode',
             'country',
+            'role'
             )
+    def get_role(self, instance):
+        instance.profile.roles.add(Role.objects.get(id=2))
+        return instance.profile.roles.values()
 
     def update(self, instance, validated_data):
         profile_data = validated_data.pop('profile', {})
