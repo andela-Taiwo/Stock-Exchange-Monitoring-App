@@ -9,12 +9,16 @@ from users.views import (
     complete_view,
     CustomLoginView, 
     UserViewSet,
-    UploadViewSet
+    UploadViewSet,
+    RolesViewSet,
+    UserRolesViewSet
     )
 
 router = DefaultRouter()
 router.register(r'profile/upload', UploadViewSet, base_name='apiv1_profileupload')
 router.register(r'profile', UserViewSet, base_name='apiv1_profile')
+router.register(r'roles', RolesViewSet, base_name='apiv1_roles')
+router.register(r'user-roles', UserRolesViewSet, base_name='apiv1_user_roles')
 urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('', include('rest_auth.urls')),

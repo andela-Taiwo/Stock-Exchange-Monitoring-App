@@ -87,7 +87,7 @@ EMAIL_USE_TLS = True
 # ACCOUNT_ADAPTER = 'api.adapter.DefaultAccountAdapterCustom'
 URL_FRONT = 'http://localhost:8000/'
 
-LOGIN_URL='http://fly-right.herokuapp.com/api/v1/login/'
+LOGIN_URL='https://stormy-lake-21329.herokuapp.com/api/v1/login/'
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
@@ -122,6 +122,7 @@ JWT_AUTH = {
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'tmp/email')
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -129,7 +130,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -199,13 +199,14 @@ USE_TZ = True
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
-
+print(os.path.join(BASE_DIR, 'static'))
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+
 
 # S3 Credentials
 S3_REGION = 'us-east-2'  # Ohio
