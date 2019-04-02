@@ -1,9 +1,6 @@
 from django.contrib.auth.models import User
-
 from allauth.utils import get_user_model
-
-
-
+from users.models import Profile, Role, Permission
 
 
 def _create_user(self, email='johndoe@gmail.com', password='tester123'):
