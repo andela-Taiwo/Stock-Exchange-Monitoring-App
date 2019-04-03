@@ -72,7 +72,7 @@ def list_stocks(requestor, query_params):
         loses__lte=0, gains__lte=0).order_by('loses', 'pub_date')
 
     losers = losers[:3] if losers.count() > 3 else losers
-    gainers = losers[:3] if gainers.count() > 3 else gainers
+    gainers = gainers[:3] if gainers.count() > 3 else gainers
   
     return {
         'top_gainers': StockSerializer(gainers, many=True).data,

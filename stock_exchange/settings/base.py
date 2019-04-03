@@ -98,9 +98,9 @@ EMAIL_USE_TLS = True
 
 # rest-auth 
 # ACCOUNT_ADAPTER = 'api.adapter.DefaultAccountAdapterCustom'
-URL_FRONT = 'http://localhost:8000/'
 
-LOGIN_URL='stock-exchange-env.qdtzm52k3p.us-east-1.elasticbeanstalk.com/api/v1/login/'
+
+LOGIN_URL='http://stock-exchange-env.qdtzm52k3p.us-east-1.elasticbeanstalk.com/api/v1/login/'
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
@@ -209,16 +209,18 @@ USE_L10N = True
 
 USE_TZ = True
 
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, "static"),
-# ]
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "stock_exchange/static"),
+]
 print(os.path.join(BASE_DIR, 'static'))
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'stock_exchange/staticfiles')
+# STATIC_URL = '/static/'
+# STATIC_ROOT = 'static'
+STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
-STATIC_ROOT = 'static'
-
 
 
 # S3 Credentials
