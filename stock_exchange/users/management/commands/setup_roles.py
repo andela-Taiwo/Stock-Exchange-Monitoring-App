@@ -20,40 +20,40 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         
-        # admin_permissions = [
-        #     ('roles', 'list'),
-        #     ('roles', 'create'),
-        #     ('roles', 'update'),
-        #     ('roles', 'retrieve'),
-        #     ('user.role', 'list'),
-        #     ('user.role', 'update'),
-        #     ('user', 'retrieve'),
-        #     ('user', 'retrieve-any'),
-        #     ('stocks', 'list'),
-        #     ('stocks', 'upload'),
-        #     ('stocks', 'filter'),
-        # ]
-        # user_permissions = [
-        #     ('stocks', 'list'),
-        #     ('stocks', 'filter'),
-        # ]
-        # roles_user = (
-        #     ('Admin', admin_permissions),
-        #     ('User', user_permissions)
-        # )
+        admin_permissions = [
+            ('roles', 'list'),
+            ('roles', 'create'),
+            ('roles', 'update'),
+            ('roles', 'retrieve'),
+            ('user.role', 'list'),
+            ('user.role', 'update'),
+            ('user', 'retrieve'),
+            ('user', 'retrieve-any'),
+            ('stocks', 'list'),
+            ('stocks', 'upload'),
+            ('stocks', 'filter'),
+        ]
+        user_permissions = [
+            ('stocks', 'list'),
+            ('stocks', 'filter'),
+        ]
+        roles_user = (
+            ('Admin', admin_permissions),
+            ('User', user_permissions)
+        )
         
-        # self.add_user_roles(roles_user)
-        # admin = User.objects.filter(email=settings.ADMIN_USER_EMAIL)
-        # if admin.exists():
-        #     admin = admin.first()
-        #     admin.is_admin = True
-        #     admin.is_superuser = False
-        #     admin.save()
-        #     admin.profile.roles.add(Role.objects.get(label='Admin'))
-        # site = Site.objects.get(domain='example.com')
-        # site.domain='stock-exchange-env.qdtzm52k3p.us-east-1.elasticbeanstalk.com'
-        # site.name='elasticbeanstalk.com'
-        # site.save()
+        self.add_user_roles(roles_user)
+        admin = User.objects.filter(email=settings.ADMIN_USER_EMAIL)
+        if admin.exists():
+            admin = admin.first()
+            admin.is_admin = True
+            admin.is_superuser = False
+            admin.save()
+            admin.profile.roles.add(Role.objects.get(label='Admin'))
+        site = Site.objects.get(domain='example.com')
+        site.domain='stock-exchange-env.qdtzm52k3p.us-east-1.elasticbeanstalk.com'
+        site.name='elasticbeanstalk.com'
+        site.save()
         self.stdout.write('Successfully created created roles')
 
         
