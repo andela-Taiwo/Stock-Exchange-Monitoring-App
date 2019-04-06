@@ -3,7 +3,7 @@ from .base import *
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    'stormy-lake-21329.herokuapp.com'
+    'stock-exchange-env.qdtzm52k3p.us-east-1.elasticbeanstalk.com','stormy-lake-21329.herokuapp.com'
 ]
 
-ADMINS = (('@memunat', 'taiwo.sokunbi@andela.com'), )
+ADMINS = (('@memunat', 'thepanache27@gmail.com'), )
