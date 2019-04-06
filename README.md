@@ -21,6 +21,13 @@ Badges
 * - Upload a profile picture `POST api/v1/profile/upload/`
 * - Change profile picture `PUT api/v1/profile/upload/{id}/`
 * - Delete profile picture `DELETE api/v1/profile/upload/{id}/`
+* - Create roles  `POST api/v1/roles/`
+* - Retrieve roles `GET api/v1/roles/`
+* - Update roles `PUT api/v1/roles/{user_id}/`
+* - Update user roles `PUT api/v1/user-roles/{user_id}/update/`
+* - List user roles `GET api/v1/user-roles/{user_id}/list/`
+
+#### Yet to be implemented
 * - Create personal stocks porfolio  `POST api/v1/stock/portfolio/`
 * - Retrieve personal `GET api/v1/stock/portfolio/`
 
