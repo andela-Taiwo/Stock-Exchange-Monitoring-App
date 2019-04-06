@@ -13,7 +13,6 @@ from stocks.serializers import (
 
 from users.roles import (UserPermissions, has_permission, check_permission)
 
-
 def decode_utf8(input_iterator):
     for l in input_iterator:
         yield l.decode('utf-8')
@@ -73,7 +72,7 @@ def list_stocks(requestor, query_params):
         loses__lte=0, gains__lte=0).order_by('loses', 'pub_date')
 
     losers = losers[:3] if losers.count() > 3 else losers
-    gainers = losers[:3] if gainers.count() > 3 else gainers
+    gainers = gainers[:3] if gainers.count() > 3 else gainers
   
     return {
         'top_gainers': StockSerializer(gainers, many=True).data,
