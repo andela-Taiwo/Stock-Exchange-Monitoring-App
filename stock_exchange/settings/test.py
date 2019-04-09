@@ -14,5 +14,8 @@ DATABASES = {
         'NAME':  ':memory:',
     }
 }
-
+ELASTICSEARCH_INDEX_NAMES = {
+    'search_indexes.documents.stocks': 'test_stock',
+    # 'search_indexes.documents.publisher': 'publisher',
+}
 SECRET_KEY = os.environ.get('SECRET_KEY')

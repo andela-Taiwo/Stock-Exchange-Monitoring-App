@@ -4,7 +4,6 @@ from users.models import User
 # Create your models here.
 
 class Stock(models.Model):
-    # author = models.ForeignKey(User, related_name='%(class)s_author', on_delete=models.PROTECT, blank=True, null=True)
     opening_price = models.DecimalField(decimal_places=2, max_digits=6)
     highest_price = models.DecimalField(decimal_places=2, max_digits=6)
     lowest_price = models.DecimalField(decimal_places=2, max_digits=6)
@@ -18,6 +17,17 @@ class Stock(models.Model):
 
     class Meta:
         ordering = ['pub_date']
+
+    # The only stock information we're going to need in our document
+    # is the stock name. 
+    @property
+    def stock_indexing(self):
+        """Stock for indexing.
+
+        Used in Elasticsearch indexing.
+        """
+        if self.stock_name is not None:
+            return self.stock_name
     
 
 
