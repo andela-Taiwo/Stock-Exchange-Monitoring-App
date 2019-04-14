@@ -13,6 +13,7 @@ jobs:
       # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
       - image: circleci/python:3.6.1
       - image: redis:4.0-alpine
+      - image: docker.elastic.co/elasticsearch/elasticsearch:5.4.2
       
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
