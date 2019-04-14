@@ -14,7 +14,7 @@ jobs:
       - image: circleci/python:3.6.1
       - image: redis:4.0-alpine
       - image: docker.elastic.co/elasticsearch/elasticsearch:5.4.2
-          environment:
+        environment:
             cluster.name: group-project-test-cluster
             xpack.security.enabled: false
             transport.host: localhost
