@@ -7,6 +7,7 @@ router = DefaultRouter()
 
 urlpatterns = [
     path('', include('users.urls')),
-    path('', include('stocks.urls'))
+    path('', include('stocks.urls')),
+    path('', include('search_indexes.urls')),
 ]
 urlpatterns += router.urls

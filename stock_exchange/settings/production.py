@@ -7,3 +7,8 @@ ALLOWED_HOSTS = [
 ]
 
 ADMINS = (('@memunat', 'thepanache27@gmail.com'), )
+
+ELASTICSEARCH_INDEX_NAMES = {
+    'search_indexes.documents.stocks': 'prod_stock',
+    # 'search_indexes.documents.publisher': 'publisher',
+}

@@ -59,8 +59,14 @@ INSTALLED_APPS = [
     'users',
     'config',
     'stocks',
+    'search_indexes',
     'corsheaders',
     'rest_auth',
+     # Django Elasticsearch integration
+    'django_elasticsearch_dsl',
+
+    # Django REST framework Elasticsearch integration (this package)
+    'django_elasticsearch_dsl_drf',
     'django.contrib.sites',
     'allauth',
     'allauth.account',
@@ -86,6 +92,19 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
 
+}
+
+# Elasticsearch configuration
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': 'localhost:9200'
+    },
+}
+
+# Name of the Elasticsearch index
+ELASTICSEARCH_INDEX_NAMES = {
+    'search_indexes.documents.stocks': 'stocks',
+    # 'search_indexes.documents.publisher': 'publisher',
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
